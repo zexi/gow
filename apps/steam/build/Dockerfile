@@ -1,11 +1,12 @@
 ARG BASE_APP_IMAGE
+ARG CTR_GAME_CUSTOMIZE_IMAGE
 
 ######################################
 # The issue here is, that you don't want to give privileged,
 # but bwrap needs CAP_SYS_ADMIN.
 # However if you explicitly give CAP_SYS_ADMIN, bwrap throws an error,
 # because it detects that capabilities have been tempered with
-FROM ubuntu:24.10 AS bwrap-builder
+FROM registry.cn-beijing.aliyuncs.com/zexi/ubuntu:24.10 AS bwrap-builder
 
 ENV DEBIAN_FRONTEND=non-interactive
 WORKDIR /root
@@ -20,6 +21,8 @@ RUN apt-get update -y && \
     meson compile -C _builddir
 
 ######################################
+
+FROM ${CTR_GAME_CUSTOMIZE_IMAGE} as customize
 
 # hadolint ignore=DL3006
 FROM ${BASE_APP_IMAGE}
@@ -70,6 +73,11 @@ COPY --chmod=777 steamos-session-select /usr/bin/steamos-session-select
 COPY --chmod=777 jupiter-biosupdate /usr/bin/jupiter-biosupdate
 COPY --chmod=777 jupiter-biosupdate /usr/bin/steamos-polkit-helpers/jupiter-biosupdate
 COPY --from=bwrap-builder --chmod=755 /root/bubblewrap/_builddir/bwrap /usr/bin/bwrap
+
+COPY --from=customize --chmod=755 /etc/cont-init.d/10-setup_user.sh /etc/cont-init.d/10-setup_user.sh
+COPY --from=customize --chmod=755 /etc/cont-init.d/30-nvidia.sh /etc/cont-init.d/30-nvidia.sh
+
+COPY --chmod=777 wolf-hook /opt/bin/wolf-hook
 
 ENV XDG_RUNTIME_DIR=/tmp/.X11-unix
 
