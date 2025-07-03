@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.4
-FROM ubuntu:24.10
+FROM ubuntu:25.04
 
 # Configure default user and set env
 # The users UID and GID will be set on container startup
@@ -32,6 +32,7 @@ apt-get install -y --no-install-recommends \
     fuse \
     libnss3 \
     wget \
+    curl \
     jq
 
 echo "**** Install gosu ****"
