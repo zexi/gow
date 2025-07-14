@@ -33,7 +33,7 @@ ARG REQUIRED_PACKAGES=" \
     steam \
     dbus-daemon dbus-system-bus-common dbus-session-bus-common whoopsie network-manager bluez \
     ibus curl pkexec xz-utils zenity file xdg-user-dirs xdg-utils pciutils lsb-release mesa-utils \
-    libfontconfig1:i386 libfontconfig1:amd64 libfreetype6 libfreetype6:i386 \
+    libfontconfig1:i386 libfontconfig1:amd64 libfreetype6 libfreetype6:i386 wl-clipboard \
 "
 
 ARG AVOID_PACKAGES=" \
@@ -75,9 +75,10 @@ COPY --chmod=777 jupiter-biosupdate /usr/bin/steamos-polkit-helpers/jupiter-bios
 COPY --from=bwrap-builder --chmod=755 /root/bubblewrap/_builddir/bwrap /usr/bin/bwrap
 
 COPY --from=customize --chmod=755 /etc/cont-init.d/10-setup_user.sh /etc/cont-init.d/10-setup_user.sh
-COPY --from=customize --chmod=755 /etc/cont-init.d/30-nvidia.sh /etc/cont-init.d/30-nvidia.sh
+#COPY --from=customize --chmod=755 /etc/cont-init.d/30-nvidia.sh /etc/cont-init.d/30-nvidia.sh
 
 COPY --chmod=777 wolf-hook /opt/bin/wolf-hook
+COPY --chmod=777 wolf-input /opt/bin/wolf-input
 
 ENV XDG_RUNTIME_DIR=/tmp/.X11-unix
 
