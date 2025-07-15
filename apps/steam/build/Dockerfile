@@ -79,6 +79,7 @@ COPY --from=customize --chmod=755 /etc/cont-init.d/10-setup_user.sh /etc/cont-in
 
 COPY --chmod=777 wolf-hook /opt/bin/wolf-hook
 COPY --chmod=777 wolf-input /opt/bin/wolf-input
+COPY configs/sway/config /cfg/sway/config
 
 ENV XDG_RUNTIME_DIR=/tmp/.X11-unix
 
