@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Steam
+Comment=Steam Gaming Platform
+Exec=/opt/gow/start-steam.sh
+Icon=steam
+Terminal=false
+Hidden=false
+X-GNOME-Autostart-enabled=true
+X-GNOME-Autostart-Delay=0
+StartupWMClass=steam
