@@ -41,6 +41,7 @@ ARG REQUIRED_PACKAGES=" \
     sudo \
     xdotool \
     wmctrl \
+    xsel \
 "
     # firefox \
 

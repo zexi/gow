@@ -47,3 +47,30 @@ if [ -n "$STEAM_WINDOW_ID" ]; then
 else
     gow_log "[steam] Warning: Could not find Steam window"
 fi
+
+# # 监控Steam进程，如果退出则终止容器
+# gow_log "[steam] Monitoring Steam process..."
+# while true; do
+#     # 首先尝试从PID文件读取当前PID
+#     CURRENT_PID=""
+#     if [ -f "/home/retro/.steam/steam.pid" ]; then
+#         CURRENT_PID=$(cat /home/retro/.steam/steam.pid 2>/dev/null)
+#     fi
+    
+#     # 如果PID文件不存在或进程不存在，检查是否有Steam进程在运行
+#     if [ -z "$CURRENT_PID" ] || ! kill -0 "$CURRENT_PID" 2>/dev/null; then
+#         # 尝试查找Steam进程
+#         CURRENT_PID=$(pgrep -f "steam.*bigpicture" | head -1)
+#         if [ -z "$CURRENT_PID" ]; then
+#             gow_log "[steam] Steam process has exited, terminating container..."
+#             # 清理XFCE进程
+#             pkill -f xfce4-session 2>/dev/null || true
+#             pkill -f Xwayland 2>/dev/null || true
+#             # 退出容器
+#             exit 0
+#         else
+#             gow_log "[steam] Steam process found with new PID: $CURRENT_PID"
+#         fi
+#     fi
+#     sleep 2
+# done

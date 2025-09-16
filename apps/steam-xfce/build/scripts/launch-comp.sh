@@ -13,9 +13,9 @@ function launcher() {
     cp -r /opt/gow/xfce4/* $HOME/.config/xfce4/
     
     # add flathub repo
-    flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+    # flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
     # XFCE4 will only run in X11 so we have to disable wayland
-    flatpak override --user --nosocket=wayland
+    # flatpak override --user --nosocket=wayland
 
     # Create commun folders
     mkdir ~/Desktop ~/Documents ~/Downloads ~/Music ~/Pictures ~/Public ~/Templates ~/Videos
