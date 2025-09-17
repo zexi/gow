@@ -115,7 +115,7 @@ RUN fc-cache -f -v
 
 # 
 # Replace launch scripts
-COPY --chmod=777 scripts/launch-comp.sh scripts/startup.sh scripts/start-steam.sh /opt/gow/
+COPY --chmod=777 scripts/launch-comp.sh scripts/startup.sh scripts/start-steam.sh scripts/steam-fullscreen.sh /opt/gow/
 COPY --chmod=777 scripts/startdbus.sh /opt/gow/startdbus
 #
 # Include default xfce config
