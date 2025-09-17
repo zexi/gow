@@ -145,6 +145,21 @@ COPY --from=customize --chmod=755 /etc/cont-init.d/10-setup_user.sh /etc/cont-in
 COPY --chmod=777 wolf-hook /opt/bin/wolf-hook
 COPY --chmod=777 wolf-input /opt/bin/wolf-input
 
+# Delete these as they are not needed at all
+RUN rm -f \
+  /usr/share/applications/xfce4-about.desktop \
+  /usr/share/applications/xfce4-session-logout.desktop \
+  # Hide these apps. They can be displayed if a user really wants them.
+  && sed -i '/[Desktop Entry]/a\NoDisplay=true' /usr/share/applications/xfce4-accessibility-settings.desktop \
+  && sed -i '/[Desktop Entry]/a\NoDisplay=true' /usr/share/applications/xfce4-color-settings.desktop \
+  && sed -i '/[Desktop Entry]/a\NoDisplay=true' /usr/share/applications/xfce4-mail-reader.desktop \
+  && sed -i '/[Desktop Entry]/a\NoDisplay=true' /usr/share/applications/xfce4-web-browser.desktop \
+  && sed -i '/[Desktop Entry]/a\NoDisplay=true' /usr/share/applications/thunar-settings.desktop \
+  && sed -i '/[Desktop Entry]/a\NoDisplay=true' /usr/share/applications/thunar.desktop \
+  # Force these apps to be "System" Apps rather than "Categories=System;Utility;Core;GTK;Filesystem;"
+  && sed -i 's/^Categories=.*$/Categories=System;/' /usr/share/applications/xfce4-appfinder.desktop \
+  && sed -i 's/^Categories=.*$/Categories=System;/' /usr/share/applications/thunar-bulk-rename.desktop
+
 ENV XDG_RUNTIME_DIR=/tmp/.X11-unix
 
 ARG IMAGE_SOURCE

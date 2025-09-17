@@ -4,7 +4,7 @@
 source /opt/gow/bash-lib/utils.sh
 
 # 等待XFCE完全启动
-sleep 2
+# sleep 2
 
 # 启动Steam Big Picture模式
 #
