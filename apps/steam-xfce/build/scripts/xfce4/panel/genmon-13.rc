@@ -1,0 +1,5 @@
+Command=hostname -I
+UseLabel=1
+Text=
+UpdatePeriod=30000
+Font=Sans 10
