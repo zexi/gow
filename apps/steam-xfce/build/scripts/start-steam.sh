@@ -1,5 +1,7 @@
 #!/bin/bash
 
+xhost +local:root
+
 # Steam Big Picture 启动脚本
 source /opt/gow/bash-lib/utils.sh
 

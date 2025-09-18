@@ -14,6 +14,7 @@
       <property name="plugin-ids" type="array">
         <value type="int" value="7"/>
         <value type="int" value="3"/>
+        <value type="int" value="6"/>
         <value type="int" value="13"/>
       </property>
     </property>
@@ -23,6 +24,12 @@
     <property name="plugin-3" type="string" value="separator">
       <property name="expand" type="bool" value="true"/>
       <property name="style" type="uint" value="0"/>
+    </property>
+    <property name="plugin-6" type="string" value="systray">
+      <property name="square-icons" type="bool" value="true"/>
+      <property name="known-items" type="array">
+        <value type="string" value="vlc"/>
+      </property>
     </property>
     <property name="plugin-13" type="string" value="genmon">
       <property name="command" type="string" value="cat /etc/hostname"/>
