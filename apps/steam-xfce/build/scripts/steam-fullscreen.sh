@@ -1,12 +1,19 @@
 #!/bin/bash
 
-# Steam全屏化监控脚本
+# Steam窗口监控脚本
+# 支持全屏和最大化两种模式
+# 通过 FULLSCREEN 环境变量控制：
+#   FULLSCREEN=TRUE  - 全屏模式（默认）
+#   FULLSCREEN=FALSE - 最大化窗口模式
 source /opt/gow/bash-lib/utils.sh
 
 # 全局变量
 STEAM_WINDOW_ID=""
 SCREEN_WIDTH=""
 SCREEN_HEIGHT=""
+
+# 配置变量 - 设置为 TRUE 启用全屏，FALSE 使用最大化窗口
+FULLSCREEN=${FULLSCREEN:-"FALSE"}
 
 # 函数：查找Steam窗口
 find_steam_window() {
@@ -83,6 +90,40 @@ is_window_fullscreen() {
     return 1  # 未全屏
 }
 
+# 函数：检查wmctrl最大化状态
+check_wmctrl_maximized() {
+    if wmctrl -l -G | grep "$STEAM_WINDOW_ID" | grep -q "maximized"; then
+        return 0  # 已最大化
+    else
+        return 1  # 未最大化
+    fi
+}
+
+# 函数：检查xprop最大化状态
+check_xprop_maximized() {
+    WINDOW_STATE=$(xprop -id "$STEAM_WINDOW_ID" _NET_WM_STATE 2>/dev/null)
+    if echo "$WINDOW_STATE" | grep -q "_NET_WM_STATE_MAXIMIZED_VERT\|_NET_WM_STATE_MAXIMIZED_HORZ"; then
+        return 0  # 已最大化
+    else
+        return 1  # 未最大化
+    fi
+}
+
+# 函数：检查窗口是否已最大化
+is_window_maximized() {
+    # 方法1: 检查wmctrl最大化状态
+    if check_wmctrl_maximized; then
+        return 0
+    fi
+    
+    # 方法2: 检查xprop最大化状态
+    if check_xprop_maximized; then
+        return 0
+    fi
+    
+    return 1  # 未最大化
+}
+
 # 函数：使用wmctrl设置全屏
 set_fullscreen_wmctrl() {
     if wmctrl -i -r "$STEAM_WINDOW_ID" -b add,fullscreen 2>/dev/null; then
@@ -124,23 +165,57 @@ set_fullscreen_xprop() {
     return 1
 }
 
-# 函数：应用全屏设置
-apply_fullscreen() {
-    gow_log "[steam-fullscreen] Found Steam window: $STEAM_WINDOW_ID, applying fullscreen..."
+# 函数：设置最大化窗口
+set_maximized_window() {
+    gow_log "[steam-fullscreen] Setting window to maximized mode..."
+    
+    # 使用wmctrl设置最大化
+    if wmctrl -i -r "$STEAM_WINDOW_ID" -b add,maximized_vert,maximized_horz 2>/dev/null; then
+        gow_log "[steam-fullscreen] Successfully maximized window using wmctrl"
+        return 0
+    fi
+    
+    # 备用方法：使用xdotool
+    if xdotool windowstate "$STEAM_WINDOW_ID" add MAXIMIZED_VERT MAXIMIZED_HORZ 2>/dev/null; then
+        gow_log "[steam-fullscreen] Successfully maximized window using xdotool"
+        return 0
+    fi
+    
+    # 备用方法：使用xprop
+    if xprop -id "$STEAM_WINDOW_ID" -f _NET_WM_STATE 32a -set _NET_WM_STATE "_NET_WM_STATE_MAXIMIZED_VERT,_NET_WM_STATE_MAXIMIZED_HORZ" 2>/dev/null; then
+        gow_log "[steam-fullscreen] Successfully maximized window using xprop"
+        return 0
+    fi
+    
+    gow_log "[steam-fullscreen] Warning: Could not maximize window"
+    return 1
+}
+
+# 函数：应用窗口设置（全屏或最大化）
+apply_window_setting() {
+    gow_log "[steam-fullscreen] Found Steam window: $STEAM_WINDOW_ID, applying window setting..."
+    gow_log "[steam-fullscreen] FULLSCREEN mode: $FULLSCREEN"
     
     # 等待窗口完全加载
     sleep 1
     
-    # 按优先级尝试不同的全屏方法
-    if set_fullscreen_wmctrl; then
-        return 0
-    elif set_fullscreen_xdotool; then
-        return 0
-    elif set_fullscreen_xprop; then
-        return 0
+    if [ "$FULLSCREEN" = "TRUE" ]; then
+        # 全屏模式：按优先级尝试不同的全屏方法
+        if set_fullscreen_wmctrl; then
+            return 0
+        elif set_fullscreen_xdotool; then
+            return 0
+        elif set_fullscreen_xprop; then
+            return 0
+        else
+            gow_log "[steam-fullscreen] Warning: Could not set fullscreen, falling back to maximized mode"
+            set_maximized_window
+            return $?
+        fi
     else
-        gow_log "[steam-fullscreen] Warning: Could not set fullscreen, Big Picture mode should handle it automatically"
-        return 1
+        # 最大化模式
+        set_maximized_window
+        return $?
     fi
 }
 
@@ -155,12 +230,24 @@ is_steam_running() {
 
 # 函数：处理Steam窗口
 handle_steam_window() {
-    if is_window_fullscreen; then
-        # gow_log "[steam-fullscreen] Steam window is already fullscreen, skipping..."
-        # 窗口已全屏，执行空命令（什么都不做）
-        :
+    if [ "$FULLSCREEN" = "TRUE" ]; then
+        # 全屏模式：检查是否已全屏
+        if is_window_fullscreen; then
+            # gow_log "[steam-fullscreen] Steam window is already fullscreen, skipping..."
+            # 窗口已全屏，执行空命令（什么都不做）
+            :
+        else
+            apply_window_setting
+        fi
     else
-        apply_fullscreen
+        # 最大化模式：检查是否已最大化
+        if is_window_maximized; then
+            # gow_log "[steam-fullscreen] Steam window is already maximized, skipping..."
+            # 窗口已最大化，执行空命令（什么都不做）
+            :
+        else
+            apply_window_setting
+        fi
     fi
 }
 
