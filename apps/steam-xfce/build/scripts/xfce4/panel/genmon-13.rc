@@ -1,0 +1,5 @@
+Command=cat /etc/hostname
+UseLabel=1
+Text=
+UpdatePeriod=30000
+Font=Sans 10

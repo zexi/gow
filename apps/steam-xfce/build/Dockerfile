@@ -63,6 +63,7 @@ ARG ADDITIONAL_PACKAGES=" \
     xfce4-taskmanager \
     xfce4-whiskermenu-plugin \
     xfce4-docklike-plugin \
+    xfce4-genmon-plugin \
     xarchiver \
     mousepad \
     zip unzip p7zip-full \

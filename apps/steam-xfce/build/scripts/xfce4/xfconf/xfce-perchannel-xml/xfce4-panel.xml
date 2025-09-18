@@ -20,6 +20,7 @@
         <value type="int" value="8"/>
         <value type="int" value="11"/>
         <value type="int" value="12"/>
+        <value type="int" value="13"/>
       </property>
     </property>
   </property>
@@ -46,6 +47,14 @@
       <property name="style" type="uint" value="0"/>
     </property>
     <property name="plugin-12" type="string" value="clock"/>
+    <property name="plugin-13" type="string" value="genmon">
+      <property name="command" type="string" value="cat /etc/hostname"/>
+      <property name="use-label" type="bool" value="true"/>
+      <property name="text" type="string" value="test"/>
+      <property name="update-period" type="int" value="3000000"/>
+      <property name="enable-single-row" type="bool" value="true"/>
+      <property name="font" type="string" value="Sans 10"/>
+    </property>
     <property name="plugin-1" type="string" value="whiskermenu">
       <property name="favorites" type="array">
         <!-- <value type="string" value="firefox.desktop"/> -->
@@ -55,7 +64,7 @@
       </property>
       <property name="button-icon" type="string" value="xubuntu-logo"/>
       <property name="view-mode" type="int" value="0"/>
-      <property name="show-command-lockscreen" type="bool" value="false"/>
+      <!-- <property name="show-command-lockscreen" type="bool" value="false"/> -->
       <property name="show-command-logout" type="bool" value="true"/>
       <property name="show-command-menueditor" type="bool" value="false"/>
       <property name="show-command-profile" type="bool" value="false"/>

@@ -7,11 +7,11 @@ source /opt/gow/bash-lib/utils.sh
 function launcher() {
   export XDG_DATA_DIRS=/var/lib/flatpak/exports/share:/home/retro/.local/share/flatpak/exports/share:/usr/local/share/:/usr/share/
 
+  # set default config
+  mkdir -p $HOME/.config/xfce4
+  cp -r /opt/gow/xfce4/* $HOME/.config/xfce4/
+
   if [ ! -d "$HOME/.config/xfce4" ]; then
-    # set default config
-    mkdir -p $HOME/.config/xfce4
-    cp -r /opt/gow/xfce4/* $HOME/.config/xfce4/
-    
     # add flathub repo
     # flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
     # XFCE4 will only run in X11 so we have to disable wayland
