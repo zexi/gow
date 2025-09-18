@@ -23,7 +23,6 @@ FULLSCREEN=${FULLSCREEN:-"FALSE"}
 GAME_WINDOW_PATTERNS=(
     "steam_app_"
     "Red Dead Redemption" 
-    "game"
     "Launcher"
     "Unity"
     "Unreal"
