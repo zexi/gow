@@ -61,6 +61,11 @@ export GTK_IM_MODULE=Steam
 export SDL_VIDEO_FULLSCREEN_HEAD=1
 export STEAM_FORCE_DESKTOPUI_SCALING=1
 
+if [ -f "/opt/bin/hook-env.sh" ]; then
+  gow_log "[steam] Source hook-env.sh"
+  source /opt/bin/hook-env.sh
+fi
+
 gow_log "[steam] Starting Steam Big Picture..."
 
 /usr/bin/notify-send "启动 Steam 大屏模式，请稍等..."
