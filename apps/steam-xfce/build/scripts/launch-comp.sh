@@ -11,6 +11,13 @@ function launcher() {
   mkdir -p $HOME/.config/xfce4
   cp -r /opt/gow/xfce4/* $HOME/.config/xfce4/
 
+  # Setup GTK3 CSS for notification font customization
+  mkdir -p $HOME/.config/gtk-3.0
+  if [ -f "/opt/gow/gtk-3.0/gtk.css" ]; then
+    cp /opt/gow/gtk-3.0/gtk.css $HOME/.config/gtk-3.0/
+    gow_log "[config] GTK3 CSS for notification font customization copied"
+  fi
+
   if [ ! -d "$HOME/.config/xfce4" ]; then
     # add flathub repo
     # flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo

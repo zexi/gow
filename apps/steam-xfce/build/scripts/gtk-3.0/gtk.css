@@ -1,0 +1,25 @@
+/* GTK3 CSS for XFCE notification font size customization */
+
+/* 设置通知窗口的字体大小 */
+#XfceNotifyWindow label {
+    font-size: 28pt;
+    font-weight: bold;
+}
+
+/* 单独设置通知标题的字体大小 */
+#XfceNotifyWindow label#summary {
+    font-size: 30pt;
+    font-weight: bold;
+}
+
+/* 单独设置通知正文的字体大小 */
+#XfceNotifyWindow label#body {
+    font-size: 36pt;
+}
+
+/* 设置通知窗口的整体样式 */
+#XfceNotifyWindow {
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+}

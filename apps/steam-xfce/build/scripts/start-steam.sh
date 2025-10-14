@@ -63,6 +63,8 @@ export STEAM_FORCE_DESKTOPUI_SCALING=1
 
 gow_log "[steam] Starting Steam Big Picture..."
 
+/usr/bin/notify-send "启动 Steam 大屏模式，请稍等..."
+
 #/usr/games/steam ${STEAM_STARTUP_FLAGS} >/tmp/steam.log 2>&1 &
 /usr/games/steam ${STEAM_STARTUP_FLAGS} &
 
@@ -80,6 +82,7 @@ gow_log "[hook] Sending POST request to hook/de-check"
 curl -X POST http://localhost:8080/hook/de-check
 
 # 监控Steam进程，如果退出则终止容器
+DISABLE_WATCH_STEAM_FILE="/tmp/wolf-hook/disable-watch-steam"
 gow_log "[steam] Monitoring Steam process..."
 while true; do
     # 首先尝试从PID文件读取当前PID
@@ -93,12 +96,18 @@ while true; do
         # 尝试查找Steam进程
         CURRENT_PID=$(pgrep -f "steam.*bigpicture" | head -1)
         if [ -z "$CURRENT_PID" ]; then
-            gow_log "[steam] Steam process has exited, terminating container..."
-            # 清理XFCE进程
-            pkill -f xfce4-session 2>/dev/null || true
-            pkill -f Xwayland 2>/dev/null || true
-            # 退出容器
-            exit 0
+            # 检查是否存在禁用监控的文件
+            if [ -f "$DISABLE_WATCH_STEAM_FILE" ]; then
+                gow_log "[steam] Steam process has exited, but disable-watch-steam file exists, skipping container termination..."
+                # 继续监控，不退出容器
+            else
+                gow_log "[steam] Steam process has exited, terminating container..."
+                # 清理XFCE进程
+                pkill -f xfce4-session 2>/dev/null || true
+                pkill -f Xwayland 2>/dev/null || true
+                # 退出容器
+                exit 0
+            fi
         else
             gow_log "[steam] Steam process found with new PID: $CURRENT_PID"
         fi

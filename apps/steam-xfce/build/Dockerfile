@@ -121,6 +121,8 @@ COPY --chmod=777 scripts/startdbus.sh /opt/gow/startdbus
 #
 # Include default xfce config
 COPY --chmod=777 --chown=retro:retro scripts/xfce4 /opt/gow/xfce4
+# Include GTK3 CSS for notification font customization
+COPY --chmod=777 --chown=retro:retro scripts/gtk-3.0 /opt/gow/gtk-3.0
 
 # 
 # Fix locals
@@ -145,6 +147,7 @@ COPY --from=customize --chmod=755 /etc/cont-init.d/10-setup_user.sh /etc/cont-in
 
 COPY --chmod=777 wolf-hook /opt/bin/wolf-hook
 COPY --chmod=777 wolf-input /opt/bin/wolf-input
+COPY --chmod=777 steam-helper /opt/bin/steam-helper
 
 # Delete these as they are not needed at all
 RUN rm -f \
