@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# 允许 exec 到容器时调用 x 相关工具
 xhost +local:root
 
 # Steam Big Picture 启动脚本
@@ -107,7 +108,9 @@ while true; do
                 # 继续监控，不退出容器
             else
                 gow_log "[steam] Steam process has exited, terminating container..."
+                /usr/bin/notify-send "Steam 没有正常运行，即将重启容器，可30秒后重连..."
                 # 清理XFCE进程
+                sleep 3
                 pkill -f xfce4-session 2>/dev/null || true
                 pkill -f Xwayland 2>/dev/null || true
                 # 退出容器

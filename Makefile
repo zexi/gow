@@ -1,4 +1,4 @@
-STEAM_TAG := custom-20251014.19
+STEAM_TAG := custom-20251015.0
 CTR_GAME_CUSTOMIZE_IMAGE := registry.cn-beijing.aliyuncs.com/zexi/ctr-game-customize:2
 
 build-steam:
