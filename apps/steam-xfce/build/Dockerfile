@@ -42,6 +42,7 @@ ARG REQUIRED_PACKAGES=" \
     xdotool \
     wmctrl \
     xsel \
+    scrot \
 "
     # firefox \
 
