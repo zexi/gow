@@ -41,7 +41,7 @@ export WINEDLLOVERRIDES=dxgi=n
 # on OOBE and stuff.
 mkdir -p "$(dirname "$MANGOHUD_CONFIGFILE")"
 echo "position=top-right" > "$MANGOHUD_CONFIGFILE"
-echo "no_display" > "$MANGOHUD_CONFIGFILE"
+echo "no_display" >> "$MANGOHUD_CONFIGFILE"
 
 # Prepare our initial VRS config file
 # for dynamic VRS in Mesa.
@@ -66,6 +66,10 @@ if [ -f "/opt/bin/hook-env.sh" ]; then
   gow_log "[steam] Source hook-env.sh"
   source /opt/bin/hook-env.sh
 fi
+
+# Enable MangoHud for all vulkan (including Proton) games
+# unless the user has explicitly disabled it in config.
+export MANGOHUD=${MANGOHUD:-1}
 
 gow_log "[steam] Starting Steam Big Picture..."
 

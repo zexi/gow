@@ -56,6 +56,9 @@ function launcher() {
   export GTK_THEME=Arc-Dark:dark
   unset WAYLAND_DISPLAY
 
+  # Start IBus to enable showing the steam on-screen keyboard
+  /usr/bin/ibus-daemon -d -r --panel=disable --emoji-extension=disable
+
   #
   # Start Xwayland and xfce4
   dbus-run-session -- bash -E -c "WAYLAND_DISPLAY=\$REAL_WAYLAND_DISPLAY Xwayland :0 & sleep 2 && startxfce4"
