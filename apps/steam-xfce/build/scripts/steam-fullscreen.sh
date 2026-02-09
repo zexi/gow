@@ -42,7 +42,7 @@ GAME_WINDOW_PATTERNS=(
 
 # 函数：查找Steam窗口
 find_steam_window() {
-    local steam_window_id=$(wmctrl -l | grep -i steam | head -1 | awk '{print $1}')
+    local steam_window_id=$(wmctrl -l | grep -i ' steam ' | head -1 | awk '{print $1}')
     
     if [ -n "$steam_window_id" ]; then
         # gow_log "[steam-fullscreen] Found Steam window: $steam_window_id" >&2

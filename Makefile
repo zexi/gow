@@ -1,4 +1,4 @@
-STEAM_TAG := custom-20251223.1
+STEAM_TAG := custom-20260209.2
 CTR_GAME_CUSTOMIZE_IMAGE := registry.cn-beijing.aliyuncs.com/zexi/ctr-game-customize:2
 PULSE_AUDIO_TAG := custom-20251018.0
 
